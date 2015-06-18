@@ -55,3 +55,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Just because I use Atom and automated ctags
+.tags

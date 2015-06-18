@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+import sys
+from argparse import ArgumentParser
+import time
+
+def time_to_seconds(timestr):
+	hours = '0'
+	minutes = '0'
+	colons = timestr.count(':')
+	if not (0 <= colons < 3):
+		raise ValueError
+
+	try:
+		hours, minutes, seconds = timestr.split(':')
+	except ValueError:
+		try:
+			minutes, seconds = timestr.split(':')
+		except ValueError:
+			seconds = timestr
+	h = int(hours)
+	m = int(minutes)
+	s = int(seconds)
+	return h*3600 + m*60 + s
+
+def usage(progname):
+	print 'usage: %s [HH:[MM:[SS]]]'
+	print '       Update your timer on the interval specified on the command line'
+	print '       Default update interval is 15:00 (or 900 seconds)'
+
+
+def main():
+	if len(sys.argv) < 2:
+		interval_seconds = 15*60
+	else:
+		if sys.argv[1] in ['-h', '--help']:
+			usage(sys.argv[0])
+			return 0
+		interval_seconds = time_to_seconds(sys.argv[1])
+
+	hour_count = interval_seconds / 3600.0
+	try:
+		while True:
+			sys.stdout.write('\r%s hrs' % hour_count)
+			sys.stdout.flush()
+			time.sleep(interval_seconds)
+			hour_count += interval_seconds / 3600.0
+	except KeyboardInterrupt:
+		sys.stdout.write('\n')
+		sys.exit(0)
+
+
+if '__main__' == __name__:
+	sys.exit(main())
