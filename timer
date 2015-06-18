@@ -37,11 +37,13 @@ def main():
 		interval_seconds = time_to_seconds(sys.argv[1])
 
 	hour_count = interval_seconds / 3600.0
+	last_write_len = 0
 	try:
 		while True:
-			sys.stdout.write('\r%s hrs' % hour_count)
+			sys.stdout.write('\r' + ' '*last_write_len + '\r%s hrs'%hour_count)
 			sys.stdout.flush()
 			time.sleep(interval_seconds)
+			last_write_len = len('%s hrs' % hour_count)
 			hour_count += interval_seconds / 3600.0
 	except KeyboardInterrupt:
 		sys.stdout.write('\n')
