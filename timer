@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-import sys
+import os, sys, time
 from argparse import ArgumentParser
-import time
 
 def time_to_seconds(timestr):
 	hours = '0'
@@ -23,7 +22,7 @@ def time_to_seconds(timestr):
 	return h*3600 + m*60 + s
 
 def usage(progname):
-	print 'usage: %s [HH:[MM:[SS]]]'
+	print 'usage: %s [HH:[MM:[SS]]]' % progname
 	print '       Update your timer on the interval specified on the command line'
 	print '       Default update interval is 15:00 (or 900 seconds)'
 
@@ -33,7 +32,7 @@ def main():
 		interval_seconds = 15*60
 	else:
 		if sys.argv[1] in ['-h', '--help']:
-			usage(sys.argv[0])
+			usage(os.path.basename(sys.argv[0]))
 			return 0
 		interval_seconds = time_to_seconds(sys.argv[1])
 
